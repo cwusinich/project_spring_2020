@@ -34,7 +34,7 @@ def test_make_param():
 	"""This tests if make_param() can make parameter files with a few non-default inputsarguments and put them in fake subjects' meg folders."""
 	fake_subdir, _ = make_test_data()
 	mid.make_param(rootdir=fake_subdir,Marker1='cue', marker1window='0 4')
-	paramfiles_exist=[os.path.exists(fake_subdir / "sub-{sub}" / "meg" / "highgamma_cue.param") for sub in FAKE_SUBS]
+	paramfiles_exist=[os.path.exists(fake_subdir / f"sub-{sub}" / "meg" / "highgamma_cue.param") for sub in FAKE_SUBS]
 	assert paramfiles_exist==[1]*len(FAKE_SUBS),'Param files were not created properly--oh no!'
 
 	#remove the evidence
