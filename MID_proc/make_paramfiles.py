@@ -45,7 +45,7 @@ def make_param(rootdir=default_rootdir, freq=default_freq, NumMarkers=default_Nu
 	
 	#make param file for each subject and drop it in their meg folder
 	for sub in sublist:
-		new_paramfile=open(f'{rootdir}{sub}/meg/{paramfile_name}','w+')	
+		new_paramfile=open(f'{rootdir}/{sub}/meg/{paramfile_name}','w+')	
 		new_paramfile.write(f"""NumMarkers {NumMarkers}\nMarker1 {Marker1} {marker1window} TRUE\nOrientBand {OrientBand}\nNoiseBand {NoiseBand}\nCovBand {CovBand}\nImageBand {ImageBand}\nDataSegment {DataSegment}\nXBounds {XBounds}\nYBounds {YBounds}\nZBounds {ZBounds}\nImageStep {ImageStep}\nImageMetric {ImageMetric}\nPrefixLength {str(len(sub))}\nMRIDirectory {rootdir}{sub}/mri\nModel {Model}\nCovType {CovType}\nImageFormat {ImageFormat}""")
 		new_paramfile.close()
 
