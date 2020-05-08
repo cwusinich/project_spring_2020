@@ -6,6 +6,7 @@ with open('README.md','r') as yeet:
 setup(
         name = 'MID_proc',
         author = 'Christina Wusinich',
+        version = '0.2.0',
 	author_email='christinawusinich@gmail.com',
         description = 'Some tools for processing MID behavioral and MEG data',
 	long_description=long_description,
