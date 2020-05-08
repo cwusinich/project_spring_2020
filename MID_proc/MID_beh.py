@@ -68,7 +68,7 @@ def clean_beh_MID(subjectlist=default_sublist):
 		subdir=subdir_pref + subject
 		#read in subject's behavior data file
 		data_read=pd.read_csv(subdir + '/behavior/MID1-' + subject + '-1_behavior.txt',delimiter='\t',skiprows=1,encoding='utf-16',engine='python')
-		behavior=data_read[['Cue','ResponseType','TrialCategory','Target.RT']]
+		behavior=data_read[['Cue','ResponseType','Target.RT']]
 
 		#assign win/loss/control hits and misses to variables respectively
 		behavior_win=behavior[behavior.Cue=='Win2']

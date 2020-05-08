@@ -3,6 +3,9 @@ import os
 import shutil
 from datetime import datetime
 from pathlib import Path
+import numpy as np
+import pandas as pd
+import random
 
 #set current date for use in filenames
 DATE_TODAY = datetime.now().strftime('%m%d%Y')
@@ -28,6 +31,33 @@ def make_test_data(basedir=None):
 		os.makedirs(fake_subdir / f"sub-{sub}" / "behavior", exist_ok=True)
 	return fake_subdir,fake_sub_file
 
+	#make fake cue files for use in behavior data processing
+	for sub in FAKE_SUBS:
+		a=np.array([0]*78)
+		b=np.array(np.linspace(10, 727, 78, False))
+		cuemarks=np.column_stack((a,b))
+		df = pd.DataFrame(cuemarks)
+		df.to_csv(fake_subdir / f'sub-{sub}' / 'meg' / 'cue_marks', index=False, header=False, sep=' ')
+        
+	#make fake behavior data files (length based on maximum length of MID behavior file)
+	for sub in FAKE_SUBS:
+		beh_name=f'MID1-{sub}-1_behavior.txt'
+		win=['Win2']*26
+		lose=['Lose2']*26
+		cont=['Control']*26
+		win.extend(lose)
+		win.extend(cont)
+		random.shuffle(win)
+		cuewords=win
+		col1=np.array(cuewords)
+		resp=random.choices(['GoodResponse','NoResponse'], k=78)
+		col2=np.array(resp)
+		rt=np.random.randint(150,550,size=78)
+		col3=rt
+		df2=np.column_stack([col1,col2,col3])
+		fake_beh=pd.DataFrame(df2,columns=['Cue','ResponseType','Target.RT'])
+		fake_beh.to_csv(fake_subdir / f'sub-{sub}' / 'behavior' / beh_name, sep=' ', mode='a', index=False)
+
 
 #first test is for the param file maker function
 def test_make_param():
@@ -40,6 +70,7 @@ def test_make_param():
 	#remove the evidence
 	shutil.rmtree(fake_subdir.parent, ignore_errors=False, onerror=None)
 
+        
 #second test will test the swarm making functions
 def test_make_swarms():
 	"""This tests if make_swarm_newDs() and make_swarm_sam() make their respective swarm files with a fake subject list and some non-default args"""
@@ -53,6 +84,15 @@ def test_make_swarms():
 
 	#remove the evidence
 	shutil.rmtree(fake_subdir.parent, ignore_errors=False, onerror=None)
+
+        
+#third test will check the behavior data functions (still under construction)
+def test_clean_beh():
+	"""This tests if 
+
+	#remove the evidence
+	shutil.rmtree(fake_subdir.parent, ignore_errors=False, onerror=None)
+
 
 if __name__=='__main__':
 	test_make_param()

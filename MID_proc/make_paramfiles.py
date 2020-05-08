@@ -5,15 +5,13 @@
 
 import os,sys
 
-#set directory, subject list, and some other things
-default_rootdir='/data/MoodGroup/07M0021_meg_analysis/MID_data/subjects/'
+#make this dictionary
 alpha=['alpha','8 14']
 beta=['beta','15 29']
 gamma=['gamma','30 60']
 highgamma=['highgamma','62 118']
 
 #set default variables here:
-default_NumMarkers='1'
 default_Marker1='respwin'
 default_marker1window='0.5 2'
 default_freq=highgamma
@@ -28,11 +26,14 @@ Model='Nolte'
 CovType='SUM'
 ImageFormat='TLRC 5'
 
-def make_param(rootdir=default_rootdir, freq=default_freq, NumMarkers=default_NumMarkers, Marker1=default_Marker1, marker1window=default_marker1window):
+def make_param(rootdir='/data/MoodGroup/07M0021_meg_analysis/MID_data/subjects/', freq, NumMarkers='1', Marker1=default_Marker1, marker1window=default_marker1window):
 	"""Makes param files for each subject in their meg folder."""
 	#define subject list and some other things for the file
 	root, dirs, files = os.walk(rootdir).__next__()
-	sublist=list(dirs)	
+
+        #provide dict of frequency band options and their Hz range, so you just need to enter the name string of the band as an argument
+        freq_dict=['alpha':'8 14','beta':'15 29','gamma':'30 60','highgamma','62 118'
+	sublist=list(dirs)
 	freqname,freqband=freq
 	OrientBand=freqband
 	NoiseBand=freqband
