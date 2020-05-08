@@ -29,7 +29,7 @@ In terms of our analysis of behavior data, we need to gather mean reaction times
 -	swarm files: MID_data/scripts/swarm
 
 
-# Processing steps (that this package helps with):  
+## Processing steps (that this package helps with):  
 
 ##	Behavior processing
 1.	**MID_beh.py** 
@@ -53,7 +53,7 @@ In terms of our analysis of behavior data, we need to gather mean reaction times
 4.	Output: .swarm files in your swarm directory; also after running this, you will see the swarm command(s) you need to run as output in your terminal window
 
 
-# Notes about this young and naive package
+## Notes about this young and naive package
 -	Obviously this package does not cover all of the MEG data processing steps involved for this task, but it has streamlined the process substantially and will hopefully one day grow up to be a mature MEG processing pipeline.
 -	The SAM swarm script successfully creates the swarm files, and the swarm files run successfully (according to the output), but the files that are created are bad (as in not the same as if each SAM command was run individually and not in a swarm). 
 - Future directions include solving the problem above, and making my scripts more useful and concise (any suggestions toward those latter goals would be appreciated!)
