@@ -5,7 +5,7 @@
 ## MID_proc
 A very amateur python package by Christina Wusinich
 
-Last updated: 04/06/2020
+Last updated: 04/08/2020
 
 ## Objective of package:  
 A series of scripts for processing behavioral and MEG data from a reward processing task, called the Monetary Incentive Delay (MID) task.
@@ -33,27 +33,27 @@ In terms of our analysis of behavior data, we need to gather mean reaction times
 
 ##	Behavior processing
 1.	**MID_beh.py** 
-- make_markerfiles_MID(subjectlist): Makes marker files for more MEG processing; these markers will designate win/loss/neutral cues to be marked in the MEG file and are output as three separate .txt files to the subject’s MEG directory
--	clean_beh_MID(subjectlist): Pulls columns from behavior data file and calculates mean RTs and accuracy by trial and subject and appends that to master behavior data sheet
-- Note: for all of these, "subjectlist" is defaulted to "processinglist.txt"
+- make_markerfiles_MID(subjectlist,subdir_base): Makes marker files for more MEG processing; these markers will designate win/loss/neutral cues to be marked in the MEG file and are output as three separate .txt files to the subject’s MEG directory
+-	clean_beh_MID(subjectlist,subdir_base,outputdir): Pulls columns from behavior data file and calculates mean RTs and accuracy by trial and subject and appends that to master behavior data sheet
 2.	Input: cue markers text file (this is from a previous MEG processing step not included here), behavior text file
 3.	Output: win/loss/neutral text files (3), two cleaned behavior csvs for each participant (deposited in their respective behavior folders), and master csv that includes mean reaction times and accuracy by participant and trial
 
 ##	Pre-SAM parameter file creation
 1.	**make_paramfiles.py**:
--	make_param(sublist, freq, NumMarkers, Marker1, marker1window): Makes parameter files for use with SAM commands (see step below) and drops each param file into each subject's meg directory
-2.	Input: function input parameters (though it has default highgamma respwin parameters); it also needs to find subject folders in your "subjects" directory
+-	make_param(freq,rootdir='/data/MoodGroup/07M0021_meg_analysis/MID_data/subjects', NumMarkers='1', Marker1='respwin', marker1window='0.5 2': Makes parameter files for use with SAM commands (see step below) and drops each param file into each subject's meg directory
+2.	Input: function input parameters; it also needs to find subject folders in your "subjects" directory
 3.	Output: a param file in each subject's meg directory
 
 ##	Create swarm files for MEG data processing
 1.	**make_swarms.py**:
--	make_swarm_newDs(subjectlist,origds,newds,marker,timewindow): Makes a swarm file that will create new datasets from existing MEG datasets for all subjects in list (helpful if you want to look in a new time window or use different markers and make a fresh batch of datasets to work with)
--	make_swarm_sam(subjectlist,ds,marker): Makes three swarm files for all subjects in list; each swarm file has a a command for source localization in high gamma using SAM (from samsrcv3)
-2. Note: for all of these functions, "subjectlist" is defaulted to "processinglist.txt", origds is defaulted to the original MID MEG data file, newds and ds are defaulted to the respwin version of the file, and other processing variables are defaulted to highgamma band in the response window of the task (only reason for this is that these are the paramters I am interested in at the moment, so it makes my life easier!)
+-	make_swarm_newDs(subjectlist,newds,marker,timewindow,swarmdir,subdir,origds='_MID-f.ds'): Makes a swarm file that will create new datasets from existing MEG datasets for all subjects in list (helpful if you want to look in a new time window or use different markers and make a fresh batch of datasets to work with)
+-	make_swarm_sam(subjectlist,ds,marker,freqband,swarmdir,subdir): Makes three swarm files for all subjects in list; each swarm file has a a command for source localization in high gamma using SAM (from samsrcv3)
+2. Note: origds is defaulted to the original filtered MID MEG data file
 3.	Input: original MEG file (something.ds) and processinglist.txt (or some file with a list of participant ID numbers you want to include--one day this will be fancier, but this is what we're working with this week), MRI with fiducial markers set, parameter file (highgamma.param)
 4.	Output: .swarm files in your swarm directory; also after running this, you will see the swarm command(s) you need to run as output in your terminal window
 
 
 # Notes about this young and naive package
--	Obviously this package does not cover all of the processing steps involved, but it has streamlined the process substantially and will hopefully one day grow up to be a mature pipeline that takes in MEG data and outputs magic.
--	The SAM swarm script successfully creates the swarm files, and the swarm files run successfully (according to the output), but the files that are created are bad (as in not the same as if each SAM command was run individually and not in a swarm). Still working on trouble-shooting this before the project deadline!
+-	Obviously this package does not cover all of the MEG data processing steps involved for this task, but it has streamlined the process substantially and will hopefully one day grow up to be a mature MEG processing pipeline.
+-	The SAM swarm script successfully creates the swarm files, and the swarm files run successfully (according to the output), but the files that are created are bad (as in not the same as if each SAM command was run individually and not in a swarm). 
+- Future directions include solving the problem above, and making my scripts more useful and concise (any suggestions toward those latter goals would be appreciated!)
