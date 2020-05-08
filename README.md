@@ -15,7 +15,7 @@ The MID task shows various shapes which allow participants to win money, avoid l
 
 The goal of my initial analysis was to report on deep source activity (i.e. striatum in this case) in the task’s MEG data using synthetic aperture magnetometry (SAM) for source localization. Showing that this is possible in MEG (usually not known for deep source analyses) will pave the way for studying reward processing in mood disorders and the impact of novel treatments using MEG. Moving forward, we are going to (and already have done a bit) conduct analyses in different time windows in the task and in different frequency bands, so the scripts below were designed to make it easier to repeat processing steps with different parameters.
 
-In terms of our analysis of behavior data, we need to gather mean reaction times and accuracy of button presses for analysis with an ANOVA (more details to come based on what factors will be involved).
+In terms of our analysis of behavior data, we need to gather mean reaction times and accuracy of button presses for analysis, which is done in this package.
 
 ## Files that need to be processed:  
 -	Behavior data: a .txt output from the MID task that indicates button presses, timing of stimuli, etc.
@@ -56,4 +56,4 @@ In terms of our analysis of behavior data, we need to gather mean reaction times
 ## Notes about this young and naive package
 -	Obviously this package does not cover all of the MEG data processing steps involved for this task, but it has streamlined the process substantially and will hopefully one day grow up to be a mature MEG processing pipeline.
 -	The SAM swarm script successfully creates the swarm files, and the swarm files run successfully (according to the output), but the files that are created are bad (as in not the same as if each SAM command was run individually and not in a swarm). 
-- Future directions include solving the problem above, and making my scripts more useful and concise (any suggestions toward those latter goals would be appreciated!)
+- Future directions include solving the problem above, and making my scripts more useful and concise (any suggestions toward that latter goal would be appreciated!)
