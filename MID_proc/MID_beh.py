@@ -1,6 +1,4 @@
-#CW 4.19.2020
-#written for python 3.7
-
+#CW 5.8.2020
 #output of these functions include marker files (for marker placement in MEG file processing) and behavioral data results (adds them to master spreadsheet)
 
 import sys,os
@@ -9,27 +7,23 @@ import numpy as np
 import pandas as pd
 import statistics
 
-#set some variables
-rootdir='/data/MoodGroup/07M0021_meg_analysis/MID_data/'
-default_sublist=rootdir + 'scripts/swarm/processinglist.txt'
-subdir_pref=rootdir + 'subjects/' + 'sub-'
 
 ##############################
 #STEP 1: MAKE MARKER TXT FILES
 #MEG preprocessing step 1 must be run first so that the cue files exist
-def make_markerfiles_MID(subjectlist=default_sublist):
-	"""Makes marker text files for each subject in input list and puts them in subject's meg folder."""	
+def make_markerfiles_MID(subjectlist,subdir_base):
+	'''Makes marker text files for each subject in input list and puts them in subject's meg folder.'''	
 	sublist=open(subjectlist, 'r')
 	proclist=sublist.readlines()
 	proclist=map(lambda x: x.strip(), proclist)
 	#loop through all subjects in input list begins here!
 	for subject in proclist:
-		subdir=subdir_pref + subject
+		subdir=f'{subdir_base}/sub-{subject}'
 		#pull data from cue_marks file
-		stimtime=pd.read_csv(subdir + '/meg/cue_marks',delimiter=' ',names=["Onset","Time"])
+		stimtime=pd.read_csv(subdir + '/meg/cue_marks',delimiter=' ',names=['Onset','Time'])
 
 		#read MID behavior file
-		data_read=pd.read_csv(subdir + '/behavior/MID1-' + subject + '-1_behavior.txt',delimiter='\t',skiprows=1,encoding='utf-16',engine='python')
+		data_read=pd.read_csv(subdir + '/behavior/MID1-' + subject + '-1_behavior.txt',delimiter='\t',skiprows=1)
 
 		#pull data from cue file and behavior file to make a stimtimes variables (includes all trial types)
 		trial=data_read[['Cue']]
@@ -56,8 +50,8 @@ def make_markerfiles_MID(subjectlist=default_sublist):
 
 #####################################################
 #STEP 2: CLEAN MID BEHAVIORAL DATA AND OUTPUT DESCRIPTIVES
-def clean_beh_MID(subjectlist=default_sublist):
-	"""Makes cleaned behavior file and descriptives file (mean reaction time and accuracy by win/lose/control trial type) for each subject and puts it in their beh folder and a group behavior files folder"""
+def clean_beh_MID(subjectlist,subdir_base,outputdir):
+	'''Makes cleaned behavior file and descriptives file (mean reaction time and accuracy by win/lose/control trial type) for each subject and puts it in their beh folder and a group behavior files folder'''
 	sublist=open(subjectlist, 'r')
 	processinglist=sublist.readlines()
 	processinglist=map(lambda x: x.strip(), processinglist)
@@ -65,9 +59,9 @@ def clean_beh_MID(subjectlist=default_sublist):
 	df_all=[]
 	#loop through all subjects in input list begins here!
 	for subject in processinglist:
-		subdir=subdir_pref + subject
+		subdir=f'{subdir_base}/sub-{subject}'
 		#read in subject's behavior data file
-		data_read=pd.read_csv(subdir + '/behavior/MID1-' + subject + '-1_behavior.txt',delimiter='\t',skiprows=1,encoding='utf-16',engine='python')
+		data_read=pd.read_csv(subdir + '/behavior/MID1-' + subject + '-1_behavior.txt',delimiter='\t',skiprows=1)
 		behavior=data_read[['Cue','ResponseType','Target.RT']]
 
 		#assign win/loss/control hits and misses to variables respectively
@@ -125,14 +119,11 @@ def clean_beh_MID(subjectlist=default_sublist):
 		#put dataframe from above into a csv in subject's behavior directory (this is the data we want to analyze for now)
 		df_2.to_csv(subdir + '/behavior/' + subject + '_behavior_MID_bytrial.csv',index=False,sep=' ')
 
-		#put dataframe from above into a csv in aggregate behavior data folder
-		df_2.to_csv(rootdir + 'processed_MID_all/behavior_all/' + subject + '_behavior_MID_bytrial.csv',index=False,sep=' ')
-
 		#add each subject's collapsed data into one csv with their subject number
 		df_2['Subject']=subject
 		df_all.append(df_2)
 	df_all=pd.concat(df_all)
-	df_all.to_csv(rootdir + 'processed_MID_all/behavior_all/all_behavior_MID_bytrial.csv',index=False,sep=' ')
+	df_all.to_csv(f'{outputdir}/all_behavior_MID_bytrial.csv',index=False,sep=' ')
 
 if __name__=='__main__':
 	make_markerfiles_MID()	
